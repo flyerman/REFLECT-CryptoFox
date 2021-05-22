@@ -7,7 +7,13 @@ async function main() {
     const Token = await ethers.getContractAt("REFLECT", contractAddr)
 
     const totalFees = await Token.totalFees()
-    console.log("Total fees:", ethers.utils.formatUnits(totalFees, unit = "gwei"))
+    console.log("Total fees:", ethers.utils.formatUnits(totalFees, unit = "ether"))
+
+    const name = await Token.name()
+    console.log("Name: ", name)
+
+    const myBalance = await Token.balanceOf("0x04ff4E0c05c0FeaccCF93251c52A78639E0ABeF4")
+    console.log("My balance: ", ethers.utils.formatUnits(myBalance, unit = "gwei"))
   }
 
   main()
