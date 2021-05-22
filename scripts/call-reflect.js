@@ -14,6 +14,9 @@ async function main() {
 
     const myBalance = await Token.balanceOf("0x04ff4E0c05c0FeaccCF93251c52A78639E0ABeF4")
     console.log("My balance: ", ethers.utils.formatUnits(myBalance, unit = "gwei"))
+
+    const totalSupply = await Token.totalSupply()
+    console.log("Total supply: ", ethers.utils.formatUnits(totalSupply, unit = "gwei"))
   }
 
   main()
