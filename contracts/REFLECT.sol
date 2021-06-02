@@ -6,6 +6,9 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+// Great introduction to the code is covered on:
+// https://wd666.medium.com/what-the-hell-is-rtotal-and-ttotal-4e2ec90466f7
+//
 contract REFLECT is Context, IERC20, Ownable {
     using SafeMath for uint256;
     using Address for address;
