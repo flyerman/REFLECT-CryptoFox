@@ -10,16 +10,33 @@ contract REFLECT is Context, IERC20, Ownable {
     using SafeMath for uint256;
     using Address for address;
 
+    // Owner balance in REFLECT
     mapping (address => uint256) private _rOwned;
+
+    // ??
     mapping (address => uint256) private _tOwned;
+
+    // ??
     mapping (address => mapping (address => uint256)) private _allowances;
 
+    // ??
     mapping (address => bool) private _isExcluded;
+
+    // ??
     address[] private _excluded;
-   
+
+    // Maximum number of mintable tokens:
+    // - 1.1579209e+77
+    // - 115.792.090.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000
     uint256 private constant MAX = ~uint256(0);
+
+    // Initial supply: 1 billion tokens and using 9 decimals.
     uint256 private constant _tTotal = 1000 * 10**6 * 10**9;
+
+    // ??
     uint256 private _rTotal = (MAX - (MAX % _tTotal));
+
+    // ?? cryptofox scpeculation: total number fees redistributed among all holders
     uint256 private _tFeeTotal;
 
     string private _name = 'Cheap Reflect';
@@ -166,7 +183,7 @@ contract REFLECT is Context, IERC20, Ownable {
     function _transferStandard(address sender, address recipient, uint256 tAmount) private {
         (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee) = _getValues(tAmount);
         _rOwned[sender] = _rOwned[sender].sub(rAmount);
-        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);       
+        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);
         _reflectFee(rFee, tFee);
         emit Transfer(sender, recipient, tTransferAmount);
     }
@@ -175,7 +192,7 @@ contract REFLECT is Context, IERC20, Ownable {
         (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee) = _getValues(tAmount);
         _rOwned[sender] = _rOwned[sender].sub(rAmount);
         _tOwned[recipient] = _tOwned[recipient].add(tTransferAmount);
-        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);           
+        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);
         _reflectFee(rFee, tFee);
         emit Transfer(sender, recipient, tTransferAmount);
     }
@@ -184,7 +201,7 @@ contract REFLECT is Context, IERC20, Ownable {
         (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee) = _getValues(tAmount);
         _tOwned[sender] = _tOwned[sender].sub(tAmount);
         _rOwned[sender] = _rOwned[sender].sub(rAmount);
-        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);   
+        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);
         _reflectFee(rFee, tFee);
         emit Transfer(sender, recipient, tTransferAmount);
     }
@@ -194,7 +211,7 @@ contract REFLECT is Context, IERC20, Ownable {
         _tOwned[sender] = _tOwned[sender].sub(tAmount);
         _rOwned[sender] = _rOwned[sender].sub(rAmount);
         _tOwned[recipient] = _tOwned[recipient].add(tTransferAmount);
-        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);        
+        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);
         _reflectFee(rFee, tFee);
         emit Transfer(sender, recipient, tTransferAmount);
     }
@@ -231,7 +248,7 @@ contract REFLECT is Context, IERC20, Ownable {
 
     function _getCurrentSupply() private view returns(uint256, uint256) {
         uint256 rSupply = _rTotal;
-        uint256 tSupply = _tTotal;      
+        uint256 tSupply = _tTotal;
         for (uint256 i = 0; i < _excluded.length; i++) {
             if (_rOwned[_excluded[i]] > rSupply || _tOwned[_excluded[i]] > tSupply) return (_rTotal, _tTotal);
             rSupply = rSupply.sub(_rOwned[_excluded[i]]);
